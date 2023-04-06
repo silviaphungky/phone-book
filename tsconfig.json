@@ -14,10 +14,29 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
+    "jsxImportSource": "@emotion/react",
     "paths": {
-      "@/*": ["./src/*"]
+      "@components": ["./src/components"],
+      "@gql/*": ["./src/gql/*"],
+      "@icons": ["./src/components/Icons"],
+      "@components/*": ["./src/components/*"],
+      "@domains/*": ["./src/domains/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@context/*": ["./src/context/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@locales": ["./src/locales"],
+      "@test/*": ["./src/test/*"],
+      "@mocks/*": ["./mocks/*"],
+      "@generalConfig": ["./src/generalConfig"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/icons/index.tss"
+  ],
   "exclude": ["node_modules"]
 }

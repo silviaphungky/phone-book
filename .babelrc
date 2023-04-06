@@ -1,0 +1,29 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-react": {
+          "runtime": "automatic",
+          "importSource": "@emotion/react"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@emotion/babel-plugin",
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@components": "./src/components",
+          "@gql": "./src/gql",
+          "@pages": "./src/pages",
+          "@utils": "./src/utils",
+          "@styles": "./src/styles"
+        }
+      }
+    ]
+  ]
+}
