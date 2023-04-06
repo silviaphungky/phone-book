@@ -9,7 +9,7 @@ import IconKebabMenu from '@components/icons/IconKebabMenu'
 import { useRef, useState } from 'react'
 import useClickOutside from '@utils/hooks/useClickOutside'
 import useDeleteContact from '@gql/hooks/useDeleteContact'
-import { Star } from '../ContactItem/_ContactItems'
+import { Star } from '../ContactItems/_ContactItems'
 import { css } from '@emotion/react'
 
 interface Props {

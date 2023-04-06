@@ -19,7 +19,7 @@ const ContactItems = ({
   handleToggleFavBtn: (contact: ContactWithMappedStatus) => void
 }) => {
   return (
-    <Container>
+    <Container data-testid="contactItemsContainer">
       {isLoading && (
         <>
           <Shimmer />
@@ -28,7 +28,7 @@ const ContactItems = ({
         </>
       )}
       {contactsData.length === 0 && !isLoading && (
-        <>
+        <div data-testid="emptyContentContainer">
           <IconEmptyData />
           <div
             css={css`
@@ -39,21 +39,22 @@ const ContactItems = ({
           >
             Contact is empty
           </div>
-        </>
+        </div>
       )}
       {contactsData.map((contact, index) => {
         return (
           <li
+            data-testid="listContainer"
             key={`${id}-contact-${contact.first_name}-${contact.last_name}-${index}`}
           >
             <div
-              style={{
-                lineHeight: '1.5rem',
+              css={css`
+                line-height: '1.5rem',
                 display: 'flex',
-                justifyContent: 'space-between',
-              }}
+                justify-content: 'space-between',
+              `}
             >
-              <strong>{`${contact.first_name} ${contact.last_name}`}</strong>
+              <strong data-testid="fullName">{`${contact.first_name} ${contact.last_name}`}</strong>
               <ContactItemAction
                 contact={contact}
                 handleToggleFavBtn={handleToggleFavBtn}
@@ -63,6 +64,7 @@ const ContactItems = ({
             <div>
               {contact.phones.map((phone) => (
                 <div
+                  data-testid="phoneNumber"
                   style={{ fontFamily: 'Barlow' }}
                   key={`${id}-phone-${phone.number}`}
                 >
