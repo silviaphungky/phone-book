@@ -92,7 +92,6 @@ const ContactFormEdit = ({
           alert('Success Update Phone Number')
           setIsEdit(false)
           refetch()
-          console.log(data)
         },
       })
     }

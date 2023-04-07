@@ -176,7 +176,6 @@ const ContactListPage = () => {
         <Button
           disabled={offset <= 0}
           onClick={() => {
-            console.log(offset, limit, 'offset')
             setOffset(offset - limit < 0 ? 0 : offset - limit)
           }}
           css={css`
