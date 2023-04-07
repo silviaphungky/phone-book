@@ -4,7 +4,10 @@ import {
   IconContainer,
   MoreActionContainer,
 } from './_ContactItemAction'
-import { ContactWithMappedStatus } from '@domains/ContactListPage/ContactListPage'
+import {
+  ContactWithMappedStatus,
+  favKey,
+} from '@domains/ContactListPage/ContactListPage'
 import IconKebabMenu from '@components/icons/IconKebabMenu'
 import { Dispatch, useRef, useState } from 'react'
 import useClickOutside from '@utils/hooks/useClickOutside'
@@ -19,6 +22,8 @@ interface Props {
   setIsEdit: Dispatch<boolean>
   setEditField: Dispatch<'name' | 'phone' | ''>
   setSelectedContact: Dispatch<ContactWithMappedStatus>
+  setIsLoadingFav: Dispatch<boolean>
+  setIsLoadingRegular: Dispatch<boolean>
 }
 
 const ContactItemAction = ({
@@ -28,6 +33,8 @@ const ContactItemAction = ({
   setIsEdit,
   setEditField,
   setSelectedContact,
+  setIsLoadingFav,
+  setIsLoadingRegular,
 }: Props) => {
   const divRef = useRef(null)
   const [isMoreAction, setIsMoreAction] = useState(false)
@@ -40,15 +47,30 @@ const ContactItemAction = ({
   const { deleteContact } = useDeleteContact()
 
   const handleDeleteContact = async (contact: ContactWithMappedStatus) => {
+    setIsLoadingFav(true)
+    setIsLoadingRegular(true)
     await deleteContact({
       variables: {
         id: contact.id,
       },
-      onCompleted: () => {
+      onCompleted: (data) => {
         alert(
           `Success delete contact ${contact.first_name} ${contact.last_name}.`
         )
         refetch()
+        const id = data.delete_contact_by_pk.id
+
+        const cachedFav = localStorage.getItem(favKey)
+
+        if (cachedFav) {
+          const parsed = JSON.parse(cachedFav)
+          const filtered = parsed.filter(
+            (el: ContactWithMappedStatus) => el.id !== id
+          )
+          localStorage.setItem(favKey, JSON.stringify(filtered))
+          setIsLoadingFav(false)
+          setIsLoadingRegular(false)
+        }
       },
     })
   }

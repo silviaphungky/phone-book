@@ -4,7 +4,7 @@ import ContactItemAction from '../ContactItemAction/ContactItemAction'
 import { Shimmer } from '@components'
 import { IconEmptyData, IconPencil } from '@components/icons'
 import { css } from '@emotion/react'
-import { useState } from 'react'
+import { Dispatch, useState } from 'react'
 import ContactFormEdit from '@domains/ContactFormNewPage/components/ContactFormEdit/ContactFormEdit'
 
 const ContactItems = ({
@@ -13,12 +13,16 @@ const ContactItems = ({
   refetch,
   contactsData,
   handleToggleFavBtn,
+  setIsLoadingFav,
+  setIsLoadingRegular,
 }: {
   id: string
   isLoading: boolean
   refetch: () => void
   contactsData: ContactWithMappedStatus[]
   handleToggleFavBtn: (contact: ContactWithMappedStatus) => void
+  setIsLoadingFav: Dispatch<boolean>
+  setIsLoadingRegular: Dispatch<boolean>
 }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [editField, setEditField] = useState<'name' | 'phone' | ''>('')
@@ -56,71 +60,74 @@ const ContactItems = ({
           </div>
         </div>
       )}
-      {contactsData.map((contact, index) => {
-        return (
-          <li
-            data-testid="listContainer"
-            key={`${id}-contact-${contact.first_name}-${contact.last_name}-${index}`}
-            css={css`
-              border-bottom: 1px solid #f4f4f4;
-            `}
-          >
-            <div
+      {!isLoading &&
+        contactsData.map((contact, index) => {
+          return (
+            <li
+              data-testid="listContainer"
+              key={`${id}-contact-${contact.first_name}-${contact.last_name}-${index}`}
               css={css`
-                line-height: 1.5rem;
-                display: flex;
-                justify-content: space-between;
+                border-bottom: 1px solid #f4f4f4;
               `}
             >
-              <strong data-testid="fullName">{`${contact.first_name} ${contact.last_name}`}</strong>
-              <ContactItemAction
-                contact={contact}
-                handleToggleFavBtn={handleToggleFavBtn}
-                refetch={refetch}
-                setIsEdit={setIsEdit}
-                setEditField={setEditField}
-                setSelectedContact={setSelectedContact}
-              />
-            </div>
-            <div>
-              {contact.phones.map((phone) => (
-                <div
-                  data-testid="phoneNumber"
-                  style={{ fontFamily: 'Barlow' }}
-                  key={`${id}-phone-${phone.number}`}
-                  css={css`
-                    padding-bottom: 0.15rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 1.5rem;
-                  `}
-                >
-                  <div>{phone.number}</div>
+              <div
+                css={css`
+                  line-height: 1.5rem;
+                  display: flex;
+                  justify-content: space-between;
+                `}
+              >
+                <strong data-testid="fullName">{`${contact.first_name} ${contact.last_name}`}</strong>
+                <ContactItemAction
+                  contact={contact}
+                  handleToggleFavBtn={handleToggleFavBtn}
+                  refetch={refetch}
+                  setIsEdit={setIsEdit}
+                  setEditField={setEditField}
+                  setSelectedContact={setSelectedContact}
+                  setIsLoadingFav={setIsLoadingFav}
+                  setIsLoadingRegular={setIsLoadingRegular}
+                />
+              </div>
+              <div>
+                {contact.phones.map((phone) => (
                   <div
+                    data-testid="phoneNumber"
+                    style={{ fontFamily: 'Barlow' }}
+                    key={`${id}-phone-${phone.number}`}
                     css={css`
-                      cursor: pointer;
+                      padding-bottom: 0.15rem;
+                      display: flex;
+                      align-items: center;
+                      gap: 1.5rem;
                     `}
-                    onClick={() => {
-                      setIsEdit(true)
-                      setEditField('phone')
-                      setSelectedContact({
-                        ...contact,
-                        phones: [
-                          {
-                            number: phone.number,
-                          },
-                        ],
-                      })
-                    }}
                   >
-                    <IconPencil />
+                    <div>{phone.number}</div>
+                    <div
+                      css={css`
+                        cursor: pointer;
+                      `}
+                      onClick={() => {
+                        setIsEdit(true)
+                        setEditField('phone')
+                        setSelectedContact({
+                          ...contact,
+                          phones: [
+                            {
+                              number: phone.number,
+                            },
+                          ],
+                        })
+                      }}
+                    >
+                      <IconPencil />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </li>
-        )
-      })}
+                ))}
+              </div>
+            </li>
+          )
+        })}
     </Container>
   )
 }

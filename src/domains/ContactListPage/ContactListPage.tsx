@@ -142,6 +142,8 @@ const ContactListPage = () => {
           refetch={refetchContactList}
           contactsData={favoriteContacts}
           handleToggleFavBtn={handleToggleFavBtn}
+          setIsLoadingFav={setIsLoadingFav}
+          setIsLoadingRegular={setIsLoadingRegular}
         />
       </ListContainer>
       <SubTitle
@@ -158,6 +160,8 @@ const ContactListPage = () => {
           refetch={refetchContactList}
           contactsData={regularContacts}
           handleToggleFavBtn={handleToggleFavBtn}
+          setIsLoadingFav={setIsLoadingFav}
+          setIsLoadingRegular={setIsLoadingRegular}
         />
       </ListContainer>
       <div

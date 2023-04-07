@@ -88,10 +88,11 @@ const ContactFormEdit = ({
           },
           new_phone_number,
         },
-        onCompleted: () => {
+        onCompleted: (data) => {
           alert('Success Update Phone Number')
           setIsEdit(false)
           refetch()
+          console.log(data)
         },
       })
     }

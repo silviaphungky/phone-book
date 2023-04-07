@@ -89,6 +89,10 @@ const ContactFormNew = ({
             <>
               {Array.from(Array(phoneFieldCount).keys()).map(
                 (item, index: number) => {
+                  const fieldError = error as unknown as Array<{
+                    number?: { message?: string }
+                  }>
+
                   return (
                     <div key={`phone-input-${index}`}>
                       <h4
@@ -107,7 +111,7 @@ const ContactFormNew = ({
                           }
                           field.onChange(value)
                         }}
-                        error={error?.[index]?.number?.message}
+                        error={fieldError?.[index]?.number?.message}
                       />
                       {index > 0 && (
                         <IconContainer
