@@ -2,8 +2,10 @@ import { ContactWithMappedStatus } from '@domains/ContactListPage/ContactListPag
 import { Container } from './_ContactItems'
 import ContactItemAction from '../ContactItemAction/ContactItemAction'
 import { Shimmer } from '@components'
-import { IconEmptyData } from '@components/icons'
+import { IconEmptyData, IconPencil } from '@components/icons'
 import { css } from '@emotion/react'
+import { useState } from 'react'
+import ContactFormEdit from '@domains/ContactFormNewPage/components/ContactFormEdit/ContactFormEdit'
 
 const ContactItems = ({
   id,
@@ -18,8 +20,21 @@ const ContactItems = ({
   contactsData: ContactWithMappedStatus[]
   handleToggleFavBtn: (contact: ContactWithMappedStatus) => void
 }) => {
+  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [editField, setEditField] = useState<'name' | 'phone' | ''>('')
+  const [selectedContact, setSelectedContact] = useState(
+    {} as ContactWithMappedStatus
+  )
   return (
     <Container data-testid="contactItemsContainer">
+      {isEdit && (
+        <ContactFormEdit
+          selectedContact={selectedContact}
+          field={editField}
+          setIsEdit={setIsEdit}
+          refetch={refetch}
+        />
+      )}
       {isLoading && (
         <>
           <Shimmer />
@@ -46,12 +61,15 @@ const ContactItems = ({
           <li
             data-testid="listContainer"
             key={`${id}-contact-${contact.first_name}-${contact.last_name}-${index}`}
+            css={css`
+              border-bottom: 1px solid #f4f4f4;
+            `}
           >
             <div
               css={css`
-                line-height: '1.5rem',
-                display: 'flex',
-                justify-content: 'space-between',
+                line-height: 1.5rem;
+                display: flex;
+                justify-content: space-between;
               `}
             >
               <strong data-testid="fullName">{`${contact.first_name} ${contact.last_name}`}</strong>
@@ -59,6 +77,9 @@ const ContactItems = ({
                 contact={contact}
                 handleToggleFavBtn={handleToggleFavBtn}
                 refetch={refetch}
+                setIsEdit={setIsEdit}
+                setEditField={setEditField}
+                setSelectedContact={setSelectedContact}
               />
             </div>
             <div>
@@ -67,8 +88,33 @@ const ContactItems = ({
                   data-testid="phoneNumber"
                   style={{ fontFamily: 'Barlow' }}
                   key={`${id}-phone-${phone.number}`}
+                  css={css`
+                    padding-bottom: 0.15rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 1.5rem;
+                  `}
                 >
-                  {phone.number}
+                  <div>{phone.number}</div>
+                  <div
+                    css={css`
+                      cursor: pointer;
+                    `}
+                    onClick={() => {
+                      setIsEdit(true)
+                      setEditField('phone')
+                      setSelectedContact({
+                        ...contact,
+                        phones: [
+                          {
+                            number: phone.number,
+                          },
+                        ],
+                      })
+                    }}
+                  >
+                    <IconPencil />
+                  </div>
                 </div>
               ))}
             </div>

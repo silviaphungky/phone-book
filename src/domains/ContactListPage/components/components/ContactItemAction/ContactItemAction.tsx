@@ -6,7 +6,7 @@ import {
 } from './_ContactItemAction'
 import { ContactWithMappedStatus } from '@domains/ContactListPage/ContactListPage'
 import IconKebabMenu from '@components/icons/IconKebabMenu'
-import { useRef, useState } from 'react'
+import { Dispatch, useRef, useState } from 'react'
 import useClickOutside from '@utils/hooks/useClickOutside'
 import useDeleteContact from '@gql/hooks/useDeleteContact'
 import { Star } from '../ContactItems/_ContactItems'
@@ -16,9 +16,19 @@ interface Props {
   contact: ContactWithMappedStatus
   handleToggleFavBtn: (contact: ContactWithMappedStatus) => void
   refetch: () => void
+  setIsEdit: Dispatch<boolean>
+  setEditField: Dispatch<'name' | 'phone' | ''>
+  setSelectedContact: Dispatch<ContactWithMappedStatus>
 }
 
-const ContactItemAction = ({ contact, handleToggleFavBtn, refetch }: Props) => {
+const ContactItemAction = ({
+  contact,
+  handleToggleFavBtn,
+  refetch,
+  setIsEdit,
+  setEditField,
+  setSelectedContact,
+}: Props) => {
   const divRef = useRef(null)
   const [isMoreAction, setIsMoreAction] = useState(false)
   const handleToggleMoreAction = () => {
@@ -58,8 +68,22 @@ const ContactItemAction = ({ contact, handleToggleFavBtn, refetch }: Props) => {
       </IconContainer>
       {isMoreAction && (
         <MoreActionContainer>
-          <ActionItem>Edit</ActionItem>
-          <ActionItem onClick={() => handleDeleteContact(contact)}>
+          <ActionItem
+            onClick={() => {
+              setIsEdit(true)
+              setEditField('name')
+              setSelectedContact(contact)
+              setIsMoreAction(false)
+            }}
+          >
+            Edit
+          </ActionItem>
+          <ActionItem
+            onClick={() => {
+              handleDeleteContact(contact)
+              setIsMoreAction(false)
+            }}
+          >
             Delete
           </ActionItem>
         </MoreActionContainer>

@@ -4,21 +4,27 @@ import {
   Container,
   IconContainer,
   NameContainer,
-} from './_ContactForm'
+} from './_ContactFormNew'
 import { Button, Input } from '@components'
 import { css } from '@emotion/react'
-import { FormValue } from '@domains/ContactFormPage/ContactFormPage'
 import { useState } from 'react'
 import { IconClose } from '@components/icons'
+import { FormValue } from '@domains/ContactFormNewPage/ContactFormNewPage'
 
-const ContactForm = ({
+const ContactFormNew = ({
   handleSubmitForm,
 }: {
   handleSubmitForm: (value: FormValue) => void
 }) => {
   const [phoneFieldCount, setPhoneFieldCount] = useState(1)
-  const { control, handleSubmit, trigger, getValues, setValue } =
-    useFormContext<FormValue>()
+  const {
+    control,
+    handleSubmit,
+    trigger,
+    getValues,
+    setValue,
+    formState: { isSubmitting },
+  } = useFormContext<FormValue>()
 
   const addNewPhoneField = () => {
     const phonesValue = getValues('phones')
@@ -136,10 +142,10 @@ const ContactForm = ({
             css={css`
               width: 100% !important;
               display: block;
-              marginleft: auto;
             `}
+            disabled={isSubmitting}
           >
-            Create
+            Create Contact
           </Button>
         </div>
       </form>
@@ -147,4 +153,4 @@ const ContactForm = ({
   )
 }
 
-export default ContactForm
+export default ContactFormNew

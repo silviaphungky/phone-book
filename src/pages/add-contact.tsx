@@ -1,4 +1,4 @@
-import ContactFormPage from '@domains/ContactFormPage'
+import ContactFormNewPage from '@domains/ContactFormNewPage'
 import Head from 'next/head'
 
 export default function AddContact() {
@@ -10,7 +10,7 @@ export default function AddContact() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ContactFormPage />
+      <ContactFormNewPage />
     </>
   )
 }
