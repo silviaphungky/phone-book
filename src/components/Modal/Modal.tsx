@@ -17,7 +17,7 @@ const Modal = ({
     setIsVisible(false)
   }
 
-  const handleModalClick = (e) => {
+  const handleModalClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
   }
 
